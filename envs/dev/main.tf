@@ -1,0 +1,7 @@
+module "network" {
+  source = "../../modules/network"
+
+  vpc_cidr = var.vpc_cidr
+  azs      = var.azs
+  env      = var.env
+}
