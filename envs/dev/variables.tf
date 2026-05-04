@@ -78,3 +78,38 @@ variable "deletion_protection" {
   description = "Whether to enable deletion protection"
   type        = bool
 }
+
+variable "alarm_email" {
+  description = "Email address to send alarm notifications to"
+  type        = string
+}
+
+variable "cpu_utilization_threshold" {
+  description = "CPU utilization percentage to trigger alarm"
+  type        = number
+}
+
+variable "rds_storage_threshold" {
+  description = "Free storage in bytes to trigger alarm"
+  type        = number
+}
+
+variable "rds_connections_threshold" {
+  description = "Number of DB connections to trigger alarm"
+  type        = number
+}
+
+variable "rds_memory_threshold" {
+  description = "Freeable memory in bytes to trigger alarm"
+  type        = number
+}
+
+variable "alb_5xx_threshold" {
+  description = "Number of 5xx errors to trigger alarm"
+  type        = number
+}
+
+variable "alb_response_time_threshold" {
+  description = "ALB response time in seconds to trigger alarm"
+  type        = number
+}

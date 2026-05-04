@@ -15,21 +15,21 @@ module "security" {
 module "compute" {
   source = "../../modules/compute"
 
-  env                  = var.env
-  vpc_id               = module.network.vpc_id
-  public_subnet_ids    = module.network.public_subnet_ids
-  private_subnet_ids   = module.network.private_subnet_ids
+  env                   = var.env
+  vpc_id                = module.network.vpc_id
+  public_subnet_ids     = module.network.public_subnet_ids
+  private_subnet_ids    = module.network.private_subnet_ids
   instance_profile_name = module.security.ec2_instance_profile_name
-  ami_id               = var.ami_id
-  instance_type        = var.instance_type
-  asg_min              = var.asg_min
-  asg_desired          = var.asg_desired
-  asg_max              = var.asg_max
+  ami_id                = var.ami_id
+  instance_type         = var.instance_type
+  asg_min               = var.asg_min
+  asg_desired           = var.asg_desired
+  asg_max               = var.asg_max
 }
 
-  module "database" {
+module "database" {
   source = "../../modules/database"
-  
+
   env                     = var.env
   vpc_id                  = module.network.vpc_id
   isolated_subnet_ids     = module.network.isolated_subnet_ids
@@ -41,4 +41,21 @@ module "compute" {
   engine_version          = var.engine_version
   backup_retention_period = var.backup_retention_period
   deletion_protection     = var.deletion_protection
+}
+
+module "monitoring" {
+  source = "../../modules/monitoring"
+
+  env                         = var.env
+  asg_name                    = module.compute.asg_name
+  alb_arn_suffix              = module.compute.alb_arn_suffix
+  target_group_arn_suffix     = module.compute.target_group_arn_suffix
+  db_identifier               = module.database.db_identifier
+  alarm_email                 = var.alarm_email
+  cpu_utilization_threshold   = var.cpu_utilization_threshold
+  rds_storage_threshold       = var.rds_storage_threshold
+  rds_connections_threshold   = var.rds_connections_threshold
+  rds_memory_threshold        = var.rds_memory_threshold
+  alb_5xx_threshold           = var.alb_5xx_threshold
+  alb_response_time_threshold = var.alb_response_time_threshold
 }
